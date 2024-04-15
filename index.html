@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html translate="no">
+  <head>
+    <meta name="google" content="notranslate">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-status-bar" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="ERAI CARGO" />
+    <link rel="apple-touch-icon" href="img/logo.png">
+    <link rel="icon" type="image" href="img/logo.png" />
+    <link rel="manifest" href="/manifest.json">
+    <script src="/pwabuilder-sw.js"></script>
+    <script>
+      let deferredPrompt = null
+      window.addEventListener('beforeinstallprompt', (e)=>{
+        e.preventDefault()
+        deferredPrompt = e
+      })
+      async function install(){
+        if (deferredPrompt){
+          deferredPrompt.prompt()
+          console.log(deferredPrompt)
+          deferredPrompt.userChoice.then(function(choiceResult){
+            if (choiceResult.outcome === 'accepted'){
+              console.log('Install')
+            }else{
+              console.log('No Install')
+            }
+            deferredPrompt = null
+          })
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <title>ERAI CARGO</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+    <script type="text/javascript" src="/js/table2excel.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/service-worker.js").then((reg) => {
+            console.log("Service worker registered.", reg);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
